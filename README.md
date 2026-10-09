@@ -1,2 +1,2 @@
-# First-Calculator
-First ever project using Python where I leveraged the skills of the lambda functions and created a simple calculator for everyday use.
+# Complete-Transaction-Engine
+Built a Python banking transaction engine supporting multi-account balance management, deposits, withdrawals, transfers and transaction validation, with O(n) transaction processing.
