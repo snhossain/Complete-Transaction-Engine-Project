@@ -1,0 +1,57 @@
+
+def transaction_engine(accounts, transactions):
+    balances = accounts.copy()
+    history = []
+    successful = 0
+    rejected = 0
+
+    for transaction in transactions:
+        transaction_type = transaction["type"]
+        amount = transaction["amount"]
+        status = "rejected"
+
+        if amount > 0:
+
+            if transaction_type == "deposit":
+                account = transaction["account"]
+
+                if account in balances:
+                    balances[account] += amount
+                    status = "accepted"
+
+            elif transaction_type == "withdraw":
+                account = transaction["account"]
+
+                if account in balances:
+                    if amount <= balances[account]:
+                        balances[account] -= amount
+                        status = "accepted"
+
+            elif transaction_type == "transfer":
+                sender = transaction["from"]
+                receiver = transaction["to"]
+
+                if sender in balances and receiver in balances:
+                    if sender != receiver:
+                        if amount <= balances[sender]:
+                            balances[sender] -= amount
+                            balances[receiver] += amount
+                            status = "accepted"
+
+        if status == "accepted":
+            successful += 1
+        else:
+            rejected += 1
+
+        history.append({
+            "transaction": transaction.copy(),
+            "status": status,
+            "balances_after": balances.copy()
+        })
+
+    return {
+        "balances": balances,
+        "successful": successful,
+        "rejected": rejected,
+        "history": history
+    }
